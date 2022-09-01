@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/rotespferd/budget/http/handler"
@@ -13,5 +14,6 @@ func main() {
 
 	http.HandleFunc("/budgets", handler.ListBudgetsHandler)
 
+	log.Printf("Listening on %s:%s", host, port)
 	http.ListenAndServe(fmt.Sprintf("%s:%s", host, port), nil)
 }
