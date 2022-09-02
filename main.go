@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/rotespferd/budget/http/handler"
+	"github.com/rotespferd/budget/budget"
 	"github.com/rotespferd/budget/http/middleware"
 )
 
@@ -23,7 +23,7 @@ func main() {
 		port = "8080"
 	}
 
-	http.HandleFunc("/budgets", middleware.Chain(handler.ListBudgetsHandler, middleware.Method("GET"), middleware.Logging()))
+	http.HandleFunc("/budgets", middleware.Chain(budget.ListBudgetsHandler, middleware.Method("GET"), middleware.Logging()))
 
 	log.Printf("Listening on %s:%s", host, port)
 	http.ListenAndServe(fmt.Sprintf("%s:%s", host, port), nil)
