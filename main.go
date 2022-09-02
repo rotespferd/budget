@@ -4,23 +4,27 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/rotespferd/budget/http/handler"
+	"github.com/rotespferd/budget/http/middleware"
 )
 
 func main() {
-	host := "localhost"
-	port := "8080"
+	// assign value of env HOST to variable host, if not set use localhost
+	host := os.Getenv("HOST")
+	if host == "" {
+		host = "localhost"
+	}
 
-	http.HandleFunc("/budgets", logging(handler.ListBudgetsHandler))
+	// assign value of env PORT to variable port, if not set use 8080
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	http.HandleFunc("/budgets", middleware.Chain(handler.ListBudgetsHandler, middleware.Method("GET"), middleware.Logging()))
 
 	log.Printf("Listening on %s:%s", host, port)
 	http.ListenAndServe(fmt.Sprintf("%s:%s", host, port), nil)
-}
-
-func logging(f http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r.URL.Path)
-		f(w, r)
-	}
 }
