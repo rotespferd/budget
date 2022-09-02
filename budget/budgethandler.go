@@ -7,12 +7,19 @@ import (
 )
 
 type ListBudgetStruct struct {
-	Title string
+	Title   string
+	Budgets []Budget
 }
 
 func ListBudgetsHandler(w http.ResponseWriter, r *http.Request) {
+	budgets := []Budget{
+		NewBudget("Rent", "Rent for the apartment", 1000, 1),
+		NewBudget("Food", "Food for the month", 500, 2),
+	}
+
 	data := ListBudgetStruct{
-		Title: "Budgets",
+		Title:   "Budgets",
+		Budgets: budgets,
 	}
 
 	// load template from file /template/budget/index.html
