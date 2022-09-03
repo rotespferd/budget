@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+
+	"github.com/rotespferd/budget/common"
 )
 
 type ListBudgetStruct struct {
@@ -12,9 +14,20 @@ type ListBudgetStruct struct {
 }
 
 func ListBudgetsHandler(w http.ResponseWriter, r *http.Request) {
-	budgets := []Budget{
-		NewBudget("Rent", "Rent for the apartment", 1000, 1),
-		NewBudget("Food", "Food for the month", 500, 2),
+	db := common.GetDatabase()
+	query := "SELECT * FROM budget"
+	rows, err := db.Query(query)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	var budgets []Budget
+
+	defer rows.Close()
+	for rows.Next() {
+		budget := NewBudgetFromDbRow(rows)
+		budgets = append(budgets, budget)
 	}
 
 	data := ListBudgetStruct{
