@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/rotespferd/budget/budget"
-	"github.com/rotespferd/budget/http/middleware"
+	"github.com/rotespferd/budget/common/http/middleware"
 )
 
 func main() {
@@ -22,6 +22,9 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
+
+	// init db connection
+	//db := common.GetDatabase()
 
 	http.HandleFunc("/budgets", middleware.Chain(budget.ListBudgetsHandler, middleware.Method("GET"), middleware.Logging()))
 
