@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	_ "github.com/mattn/go-sqlite3"
+
 	"github.com/rotespferd/budget/budget"
 	"github.com/rotespferd/budget/common/http/middleware"
 )
