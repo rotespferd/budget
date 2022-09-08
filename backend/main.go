@@ -9,7 +9,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/rotespferd/budget/budget"
-	"github.com/rotespferd/budget/common"
 	"github.com/rotespferd/budget/common/http/middleware"
 )
 
@@ -25,10 +24,6 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-
-	// initialize templates
-	common.SetTemplateConfig("./template/", "./template/_layout")
-	common.LoadTemplates()
 
 	http.HandleFunc("/budgets", middleware.Chain(budget.ListBudgetsHandler, middleware.Method("GET"), middleware.Logging()))
 

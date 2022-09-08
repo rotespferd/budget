@@ -34,8 +34,5 @@ func ListBudgetsHandler(w http.ResponseWriter, r *http.Request) {
 		Budgets: budgets,
 	}
 
-	// TODO: move template rendering to own func
-	// load template from file /template/budget/index.html
-	// https://asitdhal.medium.com/golang-template-2-template-composition-and-how-to-organize-template-files-4cb40bcdf8f6
-	common.RenderTemplate(w, "index", data)
+	w.Write([]byte(data.Title))
 }
